@@ -34,7 +34,7 @@ object TermCrawler extends App {
   val urlActor = actorSystem.actorOf(Props(new UrlActor(
     actorSystem.actorOf(Props(new WriteResultsActor(
       new File("out.txt"))),
-      "file-writing-service"), term)),
+      "file-writing-service"), term, Http)),
     "url-search-service")
 
   urls.foreach(urlActor ! _)

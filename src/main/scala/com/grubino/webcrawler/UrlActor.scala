@@ -18,14 +18,14 @@ class WriteResultsActor(file: File) extends Actor {
   }
 }
 
-class UrlActor(writeFileActor: ActorRef, term: String) extends Actor {
+class UrlActor(writeFileActor: ActorRef, term: String, httpExecutor: HttpExecutor) extends Actor {
   val log = Logging(context.system, this)
   override def receive: Receive = {
     case u: String =>
 
       log.info(s"fetching ${u}...")
       val svc = url(u)
-      for { s <- Http(svc OK as.String) } {
+      for { s <- httpExecutor(svc OK as.String) } {
         if(s.contains(term)) {
           log.info(s"found ${term} in result, sending to output writing actor...")
           writeFileActor ! u
