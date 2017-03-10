@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Run Build
-          command: sbt build
+          command: sbt compile
       - run:
           name: Run Tests
           command: sbt test
